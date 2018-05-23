@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { increment,decrement } from '../../store/actions/actionTypes';
 
-class SendSMS extends Component {
+import PhoneBook from '../../components/PhoneBook/PhoneBook';
+import SMSSending from '../../components/SMSSending/SMSSending';
 
+class SendSMS extends Component {
   render() {
+
     return (
         <div>
-          Send SMS
+          <div className="ui-g">
+              <div className="ui-g-6"><PhoneBook phoneBook={this.props.phoneBook}/></div>
+              <div className="ui-g-6"><SMSSending contacts={this.props.phoneBook}/></div>
+          </div>
+
+
         </div>
     );
   }
@@ -15,7 +23,7 @@ class SendSMS extends Component {
 
 const mapStateToProps = state => {
   return {
-    // modem: state.modem.modem
+    phoneBook: state.phoneBook.phoneBook
   };
 }
 
