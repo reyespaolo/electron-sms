@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Aux';
 import {InputText} from 'primereact/components/inputtext/InputText';
 import classes from './ModemOptions.css'
+
 class modemOptions extends Component{
 
   state = {
@@ -47,7 +48,7 @@ class modemOptions extends Component{
           </div>
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>dataBits</label><br/>
+              <label>Data Bits</label><br/>
               <InputText value = {this.state.dataBits}  onChange={(e) => this.setState({dataBits: e.target.boudRate})}/>
             </div>
           </div>
@@ -59,20 +60,20 @@ class modemOptions extends Component{
           </div>
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>stopBits</label><br/>
+              <label>Stop Bits</label><br/>
               <InputText value = {this.state.stopBits}  onChange={(e) => this.setState({dataBits: e.target.stopBits})}/>
             </div>
           </div>
 
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>flowControl</label><br/>
+              <label>Flow Control</label><br/>
               <InputText value = {this.state.flowControl}  onChange={(e) => this.setState({dataBits: e.target.flowControl})}/>
             </div>
           </div>
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>xon</label><br/>
+              <label>xOn</label><br/>
               <InputText value = {this.state.xon}  onChange={(e) => this.setState({dataBits: e.target.xon})}/>
             </div>
           </div>
@@ -84,20 +85,20 @@ class modemOptions extends Component{
           </div>
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>xoff</label><br/>
+              <label>xOff</label><br/>
               <InputText value = {this.state.xoff}  onChange={(e) => this.setState({dataBits: e.target.xoff})}/>
             </div>
           </div>
 
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>xany</label><br/>
+              <label>xAny</label><br/>
               <InputText value = {this.state.xany}  onChange={(e) => this.setState({dataBits: e.target.xany})}/>
             </div>
           </div>
           <div className="ui-g-6">
             <div className={classes.Group}>
-              <label>buffersize</label><br/>
+              <label>Buffer Size</label><br/>
               <InputText value = {this.state.buffersize}  onChange={(e) => this.setState({dataBits: e.target.buffersize})}/>
             </div>
           </div>

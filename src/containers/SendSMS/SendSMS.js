@@ -7,7 +7,6 @@ import SMSSending from '../../components/SMSSending/SMSSending';
 
 class SendSMS extends Component {
   render() {
-
     return (
         <div>
           <div className="ui-g">

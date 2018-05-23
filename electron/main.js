@@ -5,7 +5,6 @@ const url = require('url')
 const windowStateKeeper = require('electron-window-state')
 let mainMenu = Menu.buildFromTemplate( require('../electron/mainMenu.js'))
 const mainWindow = require('../electron/mainWindow')
-var modem = require('modem-commands').Modem()
 
 
 global.electron = true;
@@ -51,58 +50,62 @@ function initializeGlobalShortcut(){
 }
 
 function initializeModem(){
-  modem.listOpenPorts((err, result)=>{
-    console.log(result)
-  })
+  // console.log(mainWindow.createWindow);
+  // setInterval(() => {
+  //   modem.listOpenPorts((err, result)=>{
+  //     mainContents.send('private', "TEST")
+  //   })
+  // }, 5000)
 
-  let modemOptions = {
-    baudRate: 115200,
-    dataBits: 8,
-    parity: 'none',
-    stopBits: 1,
-    flowControl: false,
-    xon: false,
-    rtscts: false,
-    xoff: false,
-    xany: false,
-    buffersize: 0,
-    onNewMessage: true,
-    onNewMessageIndicator: true
-  }
-  var device = '/dev/tty.usbserial'
-  setInterval(() => {
-    if (!modem.isOpened) {
-      modem.open(device,modemOptions, (err,result) => {
-        if(err){
-          console.log(err)
-        }else{
-          console.log(result)
-        }
-      })
-    } else {
-      console.log(`Serial port ${modem.port.path} is open`)
-    }
-  }, 6000)
 
-  modem.on('open', (data) => {
-    modem.initializeModem((response) => {
-      console.log('response',response)
-    })
-    modem.modemMode((response) => {
-      console.log(response)
-    }, "PDU")
-  })
+  // let modemOptions = {
+  //   baudRate: 115200,
+  //   dataBits: 8,
+  //   parity: 'none',
+  //   stopBits: 1,
+  //   flowControl: false,
+  //   xon: false,
+  //   rtscts: false,
+  //   xoff: false,
+  //   xany: false,
+  //   buffersize: 0,
+  //   onNewMessage: true,
+  //   onNewMessageIndicator: true
+  // }
+  // var device = '/dev/tty.usbserial'
+  // setInterval(() => {
+  //   if (!modem.isOpened) {
+  //     modem.open(device,modemOptions, (err,result) => {
+  //       if(err){
+  //         console.log(err)
+  //       }else{
+  //         console.log(result)
+  //       }
+  //     })
+  //   } else {
+  //     console.log(`Serial port ${modem.port.path} is open`)
+  //   }
+  // }, 6000)
+  //
+  // modem.on('open', (data) => {
+  //   modem.initializeModem((response) => {
+  //     console.log('response',response)
+  //   })
+  //   modem.modemMode((response) => {
+  //     console.log(response)
+  //   }, "PDU")
+  // })
 }
 
 function initializeListeners(){
-    ipcMain.on('SMSSending:SendSMS', (e,payload) => {
-      sendSMS(payload)
-
-    })
+    // ipcMain.on('SMSSending:SendSMS', (e,payload) => {
+    //   sendSMS(payload)
+    //
+    // })
 }
 
-function sendSMS(payload){
-    modem.sendSMS(payload.contact, payload.message, function(response){
-      console.log('messgae status',response)
-    })
-}
+// function sendSMS(payload){
+//     modem.sendSMS(payload.contact, payload.message, function(response){
+//       console.log('messgae status',response)
+//     })
+// }
