@@ -3,18 +3,37 @@ import {AutoComplete} from 'primereact/components/autocomplete/AutoComplete';
 import {InputTextarea} from 'primereact/components/inputtextarea/InputTextarea';
 import {Button} from 'primereact/components/button/Button';
 import {InputText} from 'primereact/components/inputtext/InputText';
-
+const isElectron = window && window.process && window.process.type
+let ipcRenderer = null;
+if(isElectron) {
+  ipcRenderer = window.require('electron').ipcRenderer;
+  window.require('electron').ipcRenderer.setMaxListeners(20)
+}
 class SMSSending extends Component {
 
 
   constructor(props){
     super(props);
     this.state = {
-        contactSuggestions: null
+        contactSuggestions: null,
+        textArea:''
     };
-    // this.contacts = [{name:'Audi'}];
+    if(isElectron){
+      ipcRenderer.on('SMSSending:SendSMS',(err,args)=>{
+        console.log(args)
+      })
+    }
   }
 
+  handleMessageSend = () => {
+    if(isElectron){
+      let payload = {
+        'contact':this.state.contacts.mobileNumber,
+        'message': this.state.textArea
+      }
+      ipcRenderer.send('SMSSending:SendSMS', payload)
+    }
+  }
 
   suggestContacts(event) {
         let results = this.props.contacts.filter((contact) => {
@@ -25,6 +44,8 @@ class SMSSending extends Component {
   }
 
   render(){
+
+
     let inputElement = null;
     if(this.props.contacts){
       inputElement = <AutoComplete field="name" value={this.state.contacts} onChange={(e) => this.setState({contacts: e.value})}
@@ -32,7 +53,7 @@ class SMSSending extends Component {
     }else{
       inputElement = <InputText onChange={(e) => this.setState({contacts: e.target.value})}/>
     }
-    
+
     return (
       <span>
         <div className="ui-g">
@@ -40,14 +61,12 @@ class SMSSending extends Component {
               {inputElement}
             </div>
             <div className="ui-g-12">
-              <InputTextarea rows={10} cols={30} autoResize={true} />
+              <InputTextarea rows={5} cols={30} value={this.state.value} onChange={(e) => this.setState({textArea: e.target.value})} />
             </div>
             <div className="ui-g-12">
-              <Button className="pull-left" label="Send SMS" icon="fa-envelope-open" />
+              <Button onClick={this.handleMessageSend} className="pull-left" label="Send SMS" icon="fa-envelope-open" />
             </div>
         </div>
-
-
 
     </span>
     );

@@ -5,6 +5,8 @@ const url = require('url')
 const windowStateKeeper = require('electron-window-state')
 let mainMenu = Menu.buildFromTemplate( require('../electron/mainMenu.js'))
 const mainWindow = require('../electron/mainWindow')
+var modem = require('modem-commands').Modem()
+
 
 global.electron = true;
 
@@ -12,6 +14,9 @@ app.on('ready', (e) => {
   mainWindow.createWindow();
   Menu.setApplicationMenu(mainMenu);
   initializeGlobalShortcut();
+  initializeModem();
+  initializeListeners();
+
 })
 
 
@@ -19,13 +24,13 @@ app.on('before-quit', (e) => {
   console.log('App about to Quit ')
 })
 
-app.on('browser-window-blur', (e) => {
-  console.log('Window out of Focus')
-})
-
-app.on('browser-window-focus', (e) => {
-  console.log('Window in')
-})
+// app.on('browser-window-blur', (e) => {
+//   console.log('Window out of Focus')
+// })
+//
+// app.on('browser-window-focus', (e) => {
+//   console.log('Window in')
+// })
 
 app.on('window-all-closed', (e) => {
   if (process.platform !== 'darwin') {
@@ -45,50 +50,59 @@ function initializeGlobalShortcut(){
   })
 }
 
+function initializeModem(){
+  modem.listOpenPorts((err, result)=>{
+    console.log(result)
+  })
 
-// let win = null;
-// let mainContents = null
+  let modemOptions = {
+    baudRate: 115200,
+    dataBits: 8,
+    parity: 'none',
+    stopBits: 1,
+    flowControl: false,
+    xon: false,
+    rtscts: false,
+    xoff: false,
+    xany: false,
+    buffersize: 0,
+    onNewMessage: true,
+    onNewMessageIndicator: true
+  }
+  var device = '/dev/tty.usbserial'
+  setInterval(() => {
+    if (!modem.isOpened) {
+      modem.open(device,modemOptions, (err,result) => {
+        if(err){
+          console.log(err)
+        }else{
+          console.log(result)
+        }
+      })
+    } else {
+      console.log(`Serial port ${modem.port.path} is open`)
+    }
+  }, 6000)
 
-// function c(message){
-//   win.webContents.send('console', message)
-//   // ipcMain.send('console', message);
-// }
+  modem.on('open', (data) => {
+    modem.initializeModem((response) => {
+      console.log('response',response)
+    })
+    modem.modemMode((response) => {
+      console.log(response)
+    }, "PDU")
+  })
+}
 
-// function createWindow () {
-//   // modem.listOpenPorts((err, result)=>{
-//   //   console.log(result)
-//   //   ipcMain.on('console', (e,message) => {
-//   //     e.sender.send('console', result)
-//   //   })
-//   // })
-//
-//
-//   win = new BrowserWindow({
-//     width: 900,
-//     height: 900
-//   })
-//
-//
-//
-//   const startUrl = process.env.ELECTRON_START_URL || url.format({
-//       // pathname: path.join(__dirname, '/../build/index.html'),
-//       pathname: 'http://localhost:3000/',
-//       // protocol: 'file:',
-//       // slashes: true
-//   });
-//
-//   // const startUrl = process.env.ELECTRON_START_URL || url.format({
-//   //     pathname: path.join(__dirname, '/../build/index.html'),
-//   //     protocol: 'file:',
-//   //     slashes: true
-//   // });
-//
-//   win.loadURL(startUrl);
-//   mainContents = win.webContents;
-//   mainContents.openDevTools()
-//   // Emitted when the window is closed.
-//   win.on('closed', () => {
-//     win = null
-//   })
-//
-// }
+function initializeListeners(){
+    ipcMain.on('SMSSending:SendSMS', (e,payload) => {
+      sendSMS(payload)
+
+    })
+}
+
+function sendSMS(payload){
+    modem.sendSMS(payload.contact, payload.message, function(response){
+      console.log('messgae status',response)
+    })
+}
