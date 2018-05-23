@@ -64,14 +64,57 @@ const sendSMS = (payload) =>{
     })
 }
 
+
+
 const initializeListeners = () => {
-  ipcMain.on('SMSSending:SendSMS', (e,payload) => {
+  ipcMain.on('SMSSending:SendSMS', (e, payload) => {
     sendSMS(payload)
+  })
+
+  ipcMain.on('MODEM:onConnect', (err, payload) => {
+    let modemOptions = {
+      baudRate: 115200,
+      dataBits: 8,
+      parity: 'none',
+      stopBits: 1,
+      flowControl: false,
+      xon: false,
+      rtscts: false,
+      xoff: false,
+      xany: false,
+      buffersize: 0,
+      onNewMessage: true,
+      onNewMessageIndicator: true
+    }
+    var device = payload.comName
+    let mainContents = this.win.webContents;
+
+    setInterval(() => {
+      if (!modem.isOpened) {
+        modem.open(device,modemOptions, (err,result) => {
+          if(err){
+            // mainContents.send('MODEM:AvailablePorts', result)
+          }else{
+              modem.initializeModem((response) => {
+                console.log('response',response)
+              })
+              modem.modemMode((response) => {
+                console.log(response)
+              }, "PDU")
+
+            // mainContents.send('MODEM:AvailablePorts', result)
+          }
+        })
+      } else {
+        console.log(`Serial port ${modem.port.path} is open`)
+      }
+    }, 6000)
+
+
   })
 }
 
 const  initializeModem = () => {
-  console.log('initialize modem')
   setInterval(() => {
     modem.listOpenPorts((err, result)=>{
       let mainContents = this.win.webContents;

@@ -20,7 +20,7 @@ class Modem extends Component {
 
 
   connectModem(payload){
-    
+    ipcRenderer.send('MODEM:onConnect', payload)
   }
 
 
@@ -90,9 +90,6 @@ class Modem extends Component {
     }
   }
 }
-
-
-
 
 const mapStateToProps = state => {
   return {
