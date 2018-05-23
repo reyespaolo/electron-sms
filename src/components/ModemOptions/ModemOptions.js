@@ -3,7 +3,7 @@ import Aux from '../../hoc/Aux';
 import {InputText} from 'primereact/components/inputtext/InputText';
 import classes from './ModemOptions.css'
 
-class modemOptions extends Component{
+class ModemOptions extends Component{
 
   state = {
       baudRate: '',
@@ -109,4 +109,4 @@ class modemOptions extends Component{
 
 }
 
-export default modemOptions;
+export default ModemOptions;
