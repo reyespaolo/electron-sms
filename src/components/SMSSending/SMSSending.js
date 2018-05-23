@@ -16,11 +16,15 @@ class SMSSending extends Component {
     super(props);
     this.state = {
         contactSuggestions: null,
-        textArea:''
+        textArea:'',
+        disableButton: 'disabled'
     };
-    if(isElectron){
+  }
+
+  componentDidMount(){
+    if(isElectron) {
+      this.setState({disableButton: ''})
       ipcRenderer.on('SMSSending:SendSMS',(err,args)=>{
-        console.log(args)
       })
     }
   }
@@ -64,7 +68,7 @@ class SMSSending extends Component {
               <InputTextarea rows={5} cols={30} value={this.state.value} onChange={(e) => this.setState({textArea: e.target.value})} />
             </div>
             <div className="ui-g-12">
-              <Button onClick={this.handleMessageSend} className="pull-left" label="Send SMS" icon="fa-envelope-open" />
+              <Button disabled={this.state.disableButton}  onClick={this.handleMessageSend} className="pull-left" label="Send SMS" icon="fa-envelope-open" />
             </div>
         </div>
 

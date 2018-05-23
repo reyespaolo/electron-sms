@@ -6,13 +6,15 @@ import thunk from 'redux-thunk'
 import counterReducer from './reducers/counterReducer'
 import resultReducer from './reducers/resultReducer'
 import phoneBookReducer from './reducers/phoneBookReducer'
+import modemReducers from './reducers/modemReducer';
 
 export function configureStore(routerHistory) {
   const router = routerMiddleware(routerHistory);
   const reducers = {
     counter:counterReducer,
     result: resultReducer,
-    phoneBook:phoneBookReducer
+    phoneBook:phoneBookReducer,
+    modem:modemReducers
   };
 
   const rootReducer = combineReducers(reducers);

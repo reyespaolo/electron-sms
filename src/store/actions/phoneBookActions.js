@@ -1,5 +1,7 @@
+import * as actionTypes from './actionTypes'
+
 export const getPhoneBookData = () => {
   return {
-    type: GET_PHONE_BOOK_DATA
+    type: actionTypes.GET_PHONE_BOOK_DATA
   }
 }

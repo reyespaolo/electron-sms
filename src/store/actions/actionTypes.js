@@ -1,6 +1,8 @@
-export const INCREMENT = 'INCREMENT'
-export const DECREMENT = 'DECREMENT'
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
 export const GET_PHONE_BOOK_DATA = 'GET_PHONE_BOOK_DATA';
+export const SAVE_AVAILABLE_MODEMS = 'SAVE_AVAILABLE_MODEMS';
+export const GET_MODEM_OPTIONS = 'SAVE_AVAILABLE_MODEMS';
 
 export const incrementResult = () => {
   console.log('test')

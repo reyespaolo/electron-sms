@@ -5,6 +5,7 @@ import {Dropdown} from 'primereact/components/dropdown/Dropdown';
 const input = (props) => {
   let inputElement = null;
   console.log(props)
+
   switch(props.elementType) {
     case('input'):
       inputElement = <span className="ui-float-label">
@@ -20,10 +21,10 @@ const input = (props) => {
       }}/>
       break;
     default:
-      inputElement = <span className="ui-float-label">
-                    <InputText onChange={props.changed} id={props.elementConfig.name} type={props.elementConfig.type} name={props.elementConfig.name} size={props.elementConfig.size} />
-                    <label htmlFor={props.elementConfig.name}>{props.elementConfig.placeholder}</label>
-                  </span>
+      // inputElement = <span className="ui-float-label">
+      //               <InputText onChange={props.changed}  type={props.elementConfig.type}  size={props.elementConfig.size} />
+      //               <label htmlFor={props.elementConfig.name}>{props.elementConfig.placeholder}</label>
+      //             </span>
       break
     }
 
