@@ -170,6 +170,8 @@ module.exports = {
             exclude: [
               path.resolve('node_modules/primereact/resources/primereact.min.css'),
               path.resolve('node_modules/primereact/resources/themes/cupertino/theme.css'),
+              path.resolve('node_modules/font-awesome/css/font-awesome.css'),
+
             ],
             loader: ExtractTextPlugin.extract(
               Object.assign(
@@ -228,6 +230,8 @@ module.exports = {
             include: [
               path.resolve('node_modules/primereact/resources/primereact.min.css'),
               path.resolve('node_modules/primereact/resources/themes/cupertino/theme.css'),
+              path.resolve('node_modules/font-awesome/css/font-awesome.css'),
+
             ],
             loader: ExtractTextPlugin.extract(
               Object.assign(

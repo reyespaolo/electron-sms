@@ -1,48 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleRoot } from 'radium';
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {mainRoute} from '../routes'
-import classes from './App.css';
-import { increment,decrement } from '../store/actions/actionTypes';
-import logo from '../assets/logo.svg';
 import 'primereact/resources/primereact.min.css';
 import 'font-awesome/css/font-awesome.css';
 import 'primereact/resources/themes/cupertino/theme.css';
 
+import {Toolbar} from 'primereact/components/toolbar/Toolbar';
+import {Button} from 'primereact/components/button/Button';
+
+import { increment,decrement } from '../store/actions/actionTypes';
+
 class App extends Component {
-  handleClick = () => {
-    this.props.history.push({pathname: '/123467'})
+
+  handleModemSettingsClick = () => {
+    this.props.history.push({pathname: '/modem'})
   }
+
+  handleSendSMSClick = () => {
+    this.props.history.push({pathname: '/sendsms'})
+  }
+
 
   render() {
     return (
         <StyleRoot>
-          Redux Counter State: {this.props.counter}
-
-          <div className={classes.App}>
-            <header className={classes.AppHeader}>
-              <img src={logo} className={classes.AppLogo} alt="logo" />
-              <h1 className="AppTitle">React with CSS Modules</h1>
+          <div>
+            <header>
             </header>
-            <nav>
-              <ul className={classes.MenuBar}>
-                <li><NavLink exact activeStyle={{color:'#ffa500'}} className={classes.Menu} to="/">Home Route</NavLink></li>
-                <li><NavLink className={classes.Menu} activeStyle={{color:'#ffa500'}} to="/sample_route">Sample Route</NavLink></li>
-                <li><NavLink className={classes.Menu} activeStyle={{color:'#ffa500'}} to="/123">Sample Route with Params</NavLink></li>
-                <li><a className={classes.Menu} onClick={this.handleClick}>Navigate onClick</a></li>
-                <li><a className={classes.Menu} onClick={this.props.onIncrementCounter}>Counter +</a></li>
-                <li><a className={classes.Menu} onClick={this.props.onDecrementCounter}>Counter -</a></li>
-
-
-              </ul>
-            </nav>
+            <Toolbar>
+                  <div className="ui-toolbar-group-left">
+                      <Button label="Send SMS" onClick={this.handleSendSMSClick} className="ui-button-warning"/>
+                  </div>
+                  <div className="ui-toolbar-group-right">
+                      <Button className="ui-button-danger" icon="fa-cogs" onClick={this.handleModemSettingsClick}/>
+                  </div>
+              </Toolbar>
           </div>
+
             {mainRoute}
         </StyleRoot>
     );
   }
 }
+
+
 
 const mapStateToProps = state => {
   return {
@@ -58,3 +61,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));
+
+//
+// Redux Counter State: {this.props.counter}
+//

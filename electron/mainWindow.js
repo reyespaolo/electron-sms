@@ -24,15 +24,15 @@ exports.createWindow = () => {
   })
   mainWindowState.manage(this.win);
 
-    // const startUrl = process.env.ELECTRON_START_URL || url.format({
-    //     pathname: path.join(__dirname, '/../build/index.html'),
-    //     protocol: 'file:',
-    //     slashes: true
-    // });
-
     const startUrl = process.env.ELECTRON_START_URL || url.format({
-        pathname: 'http://localhost:3000',
+        pathname: path.join(__dirname, '/../build/index.html'),
+        protocol: 'file:',
+        slashes: true
     });
+
+    // const startUrl = process.env.ELECTRON_START_URL || url.format({
+    //     pathname: 'http://localhost:3000',
+    // });
 
     this.win.loadURL(startUrl);
 
