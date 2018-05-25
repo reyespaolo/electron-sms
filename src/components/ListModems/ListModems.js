@@ -12,7 +12,7 @@ class ListModems extends Component{
       color ='ui-button-success'
     }else if (rowData.status === 'Offline') {
       color ='ui-button-danger'
-    }else if(rowData.status === 'Connecting'){
+    }else if(rowData.status === 'Connecting..'){
       color = 'ui-button-warning'
     }
     return <div>
@@ -25,7 +25,10 @@ class ListModems extends Component{
     if(rowData.status === 'Online') {
       color = 'green'
       return <span style={{color: color}}>{rowData['status']}</span>;
-    } else{
+    } else if(rowData.status === 'Connecting..'){
+      color = 'orange'
+      return <span style={{color: color}}>{rowData['status']}</span>;
+    }else{
       color = 'red'
       return <span style={{color: color}}>{rowData['status']}</span>;
     }
@@ -33,6 +36,10 @@ class ListModems extends Component{
 
 
   render(){
+    // console.log(this.props.modems[0].status)
+    // console.log('list')
+    // console.log(this.props.modems)
+
     return(
       <Aux>
         <DataTable value={this.props.modems}>

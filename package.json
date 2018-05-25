@@ -65,9 +65,8 @@
   "devDependencies": {
     "electron": "^1.7.10",
     "electron-builder": "^19.52.1",
-    "foreman": "^2.0.0",
-    "electron-rebuild": "^1.7.3"
-
+    "electron-rebuild": "^1.7.3",
+    "foreman": "^2.0.0"
   },
   "scripts": {
     "rebuild": "electron-rebuild",

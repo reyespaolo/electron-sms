@@ -28,6 +28,8 @@ export function configureStore(routerHistory) {
   }
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const middlewares = [ logger, thunk, router ];
-  const enhancer = composeEnhancers(applyMiddleware(...middlewares), persistState());
+  const enhancer = composeEnhancers(applyMiddleware(...middlewares));
   return createStore(rootReducer, enhancer);
 }
+
+//persistState()
