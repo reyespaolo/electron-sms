@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { increment,decrement } from '../../store/actions/actionTypes';
 import ModemOptions from '../../components/ModemOptions/ModemOptions';
 import ListModems from '../../components/ListModems/ListModems';
 const isElectron = window && window.process && window.process.type
@@ -28,7 +27,7 @@ class Modem extends Component {
   render() {
     return (
           <div className="ui-g">
-                <div className="ui-g-6"><ListModems onConnect = {(payload) => {this.onModemConnect(payload)}} modems={[...this.state.availableModems]}/></div>
+                <div className="ui-g-6"><ListModems onConnect = {(payload) => {this.onModemConnect(payload)}} modems={this.state.availableModems}/></div>
                 <div className="ui-g-6"><ModemOptions  modemOptions={this.props.modemOptions}/></div>
           </div>
 
@@ -97,11 +96,4 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncrementCounter: () => dispatch(increment()),
-    onDecrementCounter:() => dispatch(decrement())
-  }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Modem);
+export default connect(mapStateToProps)(Modem);

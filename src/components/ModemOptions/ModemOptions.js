@@ -3,10 +3,10 @@ import Aux from '../../hoc/Aux';
 import {InputText} from 'primereact/components/inputtext/InputText';
 import classes from './ModemOptions.css'
 
-class ModemOptions extends Component{
+class modemOptions extends Component{
 
   state = {
-      baudRate: '',
+      baudRate: 115200,
       dataBits: 0,
       parity: '',
       stopBits: 0,
@@ -21,18 +21,18 @@ class ModemOptions extends Component{
   }
 
   componentDidMount(){
-    this.setState({
-      baudRate: this.props.modemOptions.baudRate,
-      dataBits: this.props.modemOptions.dataBits,
-      parity: this.props.modemOptions.parity,
-      stopBits: this.props.modemOptions.stopBits,
-      flowControl: this.props.modemOptions.flowControl,
-      xon: this.props.modemOptions.xon,
-      rtscts: this.props.modemOptions.rtscts,
-      xoff: this.props.modemOptions.xoff,
-      xany: this.props.modemOptions.xany,
-      buffersize: this.props.modemOptions.buffersize,
-    })
+    // this.setState({
+    //   baudRate: this.props.modemOptions.baudRate,
+    //   dataBits: this.props.modemOptions.dataBits,
+    //   parity: this.props.modemOptions.parity,
+    //   stopBits: this.props.modemOptions.stopBits,
+    //   flowControl: this.props.modemOptions.flowControl,
+    //   xon: this.props.modemOptions.xon,
+    //   rtscts: this.props.modemOptions.rtscts,
+    //   xoff: this.props.modemOptions.xoff,
+    //   xany: this.props.modemOptions.xany,
+    //   buffersize: this.props.modemOptions.buffersize,
+    // })
   }
 
   render(){
@@ -109,4 +109,4 @@ class ModemOptions extends Component{
 
 }
 
-export default ModemOptions;
+export default modemOptions;

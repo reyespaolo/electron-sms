@@ -19,10 +19,10 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-
-  if(action.type === actionTypes.GET_MODEM_OPTIONS){
+  if(action.type === actionTypes.SAVE_AVAILABLE_MODEMS){
     return state.modemOptions
   }
+  console.log(state)
   return state;
 }
 

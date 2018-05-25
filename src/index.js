@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import registerServiceWorker from './config/registerServiceWorker';
 import { createMemoryHistory } from 'history';
 import {configureStore} from './store/store'
-import App from './containers/App.js';
+import App from './containers/App';
 const routerHistory = createMemoryHistory();
 const isElectron = window && window.process && window.process.type
 let ipcRenderer = null;

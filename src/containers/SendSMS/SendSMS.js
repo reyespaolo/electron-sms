@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { increment,decrement } from '../../store/actions/actionTypes';
 
 import PhoneBook from '../../components/PhoneBook/PhoneBook';
 import SMSSending from '../../components/SMSSending/SMSSending';
@@ -13,8 +12,6 @@ class SendSMS extends Component {
               <div className="ui-g-6"><PhoneBook phoneBook={this.props.phoneBook}/></div>
               <div className="ui-g-6"><SMSSending contacts={this.props.phoneBook}/></div>
           </div>
-
-
         </div>
     );
   }
@@ -26,11 +23,5 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncrementCounter: () => dispatch(increment()),
-    onDecrementCounter:() => dispatch(decrement())
-  }
-}
 
-export default connect(mapStateToProps,mapDispatchToProps)(SendSMS);
+export default connect(mapStateToProps)(SendSMS);

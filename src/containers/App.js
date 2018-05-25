@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { StyleRoot } from 'radium';
 import { withRouter } from "react-router-dom";
 import {mainRoute} from '../routes'
@@ -9,8 +8,6 @@ import 'primereact/resources/themes/cupertino/theme.css';
 
 import {Toolbar} from 'primereact/components/toolbar/Toolbar';
 import {Button} from 'primereact/components/button/Button';
-
-import { increment,decrement } from '../store/actions/actionTypes';
 
 class App extends Component {
 
@@ -45,23 +42,4 @@ class App extends Component {
   }
 }
 
-
-
-const mapStateToProps = state => {
-  return {
-    counter: state.counter.counter
-  };
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncrementCounter: () => dispatch(increment()),
-    onDecrementCounter:() => dispatch(decrement())
-  }
-}
-
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));
-
-//
-// Redux Counter State: {this.props.counter}
-//
+export default withRouter(App);

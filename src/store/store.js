@@ -11,10 +11,10 @@ import modemReducers from './reducers/modemReducer';
 export function configureStore(routerHistory) {
   const router = routerMiddleware(routerHistory);
   const reducers = {
-    counter:counterReducer,
+    counter: counterReducer,
     result: resultReducer,
-    phoneBook:phoneBookReducer,
-    modem:modemReducers
+    phoneBook: phoneBookReducer,
+    modem: modemReducers
   };
 
   const rootReducer = combineReducers(reducers);
