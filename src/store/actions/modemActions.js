@@ -8,10 +8,16 @@ export const loadModems = (modems) => {
   }
 }
 
-export const connectModem = (modem) => {
-  console.log('connecting')
+export const onConnectModem = (modem) => {
   return {
     type: actionTypes.CONNECTING_MODEM,
+    payload: modem
+  }
+}
+export const initializModem = (modem) => {
+  console.log('connecting')
+  return {
+    type: actionTypes.INITIALIZING_MODEM,
     payload: modem
   }
 }

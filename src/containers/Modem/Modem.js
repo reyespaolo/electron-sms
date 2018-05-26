@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadModems,connectModem } from '../../store/actions/modemActions';
+import { loadModems,onConnectModem,initializModem } from '../../store/actions/modemActions';
 import ListModems from '../../components/ListModems/ListModems';
-
+import * as actionTypes from '../../store/actions/actionTypes';
 const isElectron = window && window.process && window.process.type
 let ipcRenderer = null;
 if(isElectron) ipcRenderer = window.require('electron').ipcRenderer;
-// import ModemOptions from '../../components/ModemOptions/ModemOptions';
 
 class Modem extends Component {
 
+  componentDidMount(){
+    this.initializeListeners();
+  }
 
-  connectModem(payload){
-    ipcRenderer.send('MODEM:onConnect', payload)
+
+  initializeListeners () {
+    if (isElectron) {
+        ipcRenderer.on('MODEM:Listener', (err, payload) => {
+          if(payload.status === 'success'){
+            switch(payload.action) {
+              case 'LISTEN_OPEN_PORTS': {
+                this.props.loadModems(payload.data);
+                break;
+              }
+              case 'CONNECTING_MODEM': {
+                //Initialize Modem by sending AT Command
+                ipcRenderer.send('MODEM:Actions', {'status':'success', 'module': 'Modem', 'action': 'INITIALIZE_MODEM', 'data': {modem: payload}})
+                break;
+              }
+              default:
+                break;
+            }
+          }
+        })
+    }
   }
 
 
@@ -27,20 +48,18 @@ class Modem extends Component {
     );
   }
 
-  componentDidMount(){
-
-    if (isElectron) {
-        ipcRenderer.on('MODEM:AvailablePorts', (err, payload) => {
-          this.props.loadModems(payload)
-        })
-    }
-  }
 
   onModemConnect(payload){
-    this.connectModem(payload);
-    this.props.connectModem(payload)
+    this.props.onConnectModem(payload)
+    ipcRenderer.send('MODEM:Actions', {'status':'success', 'module': 'Modem', 'action': actionTypes.CONNECTING_MODEM, 'data': {modem: payload, modemOptions:null}})
   }
+
+
 }
+
+
+
+
 
 const mapStateToProps = state => {
   return {
@@ -51,8 +70,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadModems: (modems) => dispatch(loadModems(modems)),
-    connectModem: (modem) => dispatch(connectModem(modem))
-
+    onConnectModem: (modem) => dispatch(onConnectModem(modem)),
+    initializModem: (modem) => dispatch(initializModem(modem))
   }
 
 }
