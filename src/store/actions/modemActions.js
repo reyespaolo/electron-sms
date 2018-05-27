@@ -14,10 +14,10 @@ export const onConnectModem = (modem) => {
     payload: modem
   }
 }
-export const initializModem = (modem) => {
-  console.log('connecting')
+export const changeModemStatus = (modem, status) => {
   return {
-    type: actionTypes.INITIALIZING_MODEM,
-    payload: modem
+    type: actionTypes.CHANGE_MODEM_STATUS,
+    payload: modem,
+    status: status
   }
 }

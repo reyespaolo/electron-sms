@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadModems,onConnectModem,initializModem } from '../../store/actions/modemActions';
+import { loadModems,onConnectModem,changeModemStatus } from '../../store/actions/modemActions';
 import ListModems from '../../components/ListModems/ListModems';
 import * as actionTypes from '../../store/actions/actionTypes';
 const isElectron = window && window.process && window.process.type
@@ -23,14 +23,16 @@ class Modem extends Component {
                 this.props.loadModems(payload.data);
                 break;
               }
-              case 'CONNECTING_MODEM': {
-                //Initialize Modem by sending AT Command
-                ipcRenderer.send('MODEM:Actions', {'status':'success', 'module': 'Modem', 'action': 'INITIALIZE_MODEM', 'data': {modem: payload}})
+              case 'MODEM_CONNECTED': {
+                console.log('connected' , payload)
+                this.props.changeModemStatus({modem:{comName: payload.data.modem.modem}}, 'Connected');
                 break;
               }
               default:
                 break;
             }
+          }else{
+            console.log(payload)
           }
         })
     }
@@ -71,7 +73,7 @@ const mapDispatchToProps = dispatch => {
   return {
     loadModems: (modems) => dispatch(loadModems(modems)),
     onConnectModem: (modem) => dispatch(onConnectModem(modem)),
-    initializModem: (modem) => dispatch(initializModem(modem))
+    changeModemStatus: (modem, status) => dispatch(changeModemStatus(modem, status))
   }
 
 }

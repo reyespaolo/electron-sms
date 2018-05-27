@@ -65,6 +65,8 @@ const sendSMS = (payload) =>{
 }
 
 const initializeListeners = () => {
+
+
   ipcMain.on('SMSSending:SendSMS', (e, payload) => {
     sendSMS(payload)
   })
@@ -78,59 +80,15 @@ const initializeListeners = () => {
           onModemConnect(payload.data)
           break;
         }
-        case 'INITIALIZE_MODEM': {
-          prepareModem(); // send AT command to knwo if modem is responding, convert modem to PDU mode
-          break;
-        }
+
         default:
           break;
       }
     }
 
-  //
-  //   var device = payload.comName
-  //   let mainContents = this.win.webContents;
-  //   openInterval = setInterval(() => {
-  //     if (!modem.isOpened) {
-  //       modem.open(device,modemOptions, (err,result) => {
-  //         if(err){
-  //           // mainContents.send('MODEM:Status', {'status':'Error',request: 'MODEM:onConnect', data:err})
-  //         }else{
-  //           // // mainContents.send('MODEM:Status', {'status':'success',request: 'MODEM:onConnect', data:result})
-  //           // modem.initializeModem((response) => {
-  //           //   // console.log('response',response)
-  //           // })
-  //           // modem.modemMode((response) => {
-  //           //   // console.log(response)
-  //           // }, "PDU")
-  //           // if(result.status == 'success'){
-  //           //
-  //           //
-  //           // }
-  //
-  //             // setTimeout(function(){
-  //             //   mainContents.send('MODEM:Status', {'status':'Error',request: 'MODEM:initializing', data:{modem:result.data.modem}})
-  //             //   console.log(result.data.modem)
-  //             //   console.log('error')
-  //             //   stopOpenInterval();
-  //             // }, 10000);
-  //
-  //           // mainContents.send('MODEM:AvailablePorts', result)
-  //         }
-  //       })
-  //     } else {
-  //       console.log(`Serial port ${modem.port.path} is open`)
-  //     }
-  //   }, 6000)
-  //
-  //
   })
 }
 
-// const stopOpenInterval = () => {
-//     clearTimeout(openInterval);
-// }
-//
 
 const  initializeModem = () => {
   setInterval(() => {
@@ -139,20 +97,6 @@ const  initializeModem = () => {
       mainContents.send('MODEM:Listener', {'status': 'success', 'module': 'Modem', 'action':'LISTEN_OPEN_PORTS', 'data':result})
     })
   }, 5000)
-
-}
-
-const prepareModem = () => {
-
-  modem.initializeModem((response) => {
-    console.log(reposnse)
-  })
-
-  setTimeout(function(){
-    console.log('Modem Not Responding')
-  }, 20000);
-
-
 
 }
 
@@ -168,9 +112,23 @@ const onModemConnect = (payload) => {
 
   modem.open(payload.modem.comName, modemOptions, (err,result) => {
     if(err) {
-      mainContents.send('MODEM:Listener', {'status': 'fail', 'module': 'Modem', 'action': 'CONNECTING_MODEM', 'data':err})
+      mainContents.send('MODEM:Listener', {'status': 'fail', 'module': 'Modem', 'action': 'MODEM_CONNECTED', 'data':{'modem':result.data}})
     } else {
-      mainContents.send('MODEM:Listener', {'status': 'success', 'module': 'Modem', 'action': 'CONNECTING_MODEM', 'data':result.data})
+      modem.initializeModem((response) => {
+        if(response.status === 'success'){
+          modem.modemMode((response) => {
+            if(response.status === 'success'){
+              clearTimeout(openInterval);
+              mainContents.send('MODEM:Listener', {'status': 'success', 'module': 'Modem', 'action': 'MODEM_CONNECTED', 'data':{'modem':result.data}})
+            }
+          }, "PDU")
+        }
+      })
+
+      openInterval = setTimeout(() => {
+        mainContents.send('MODEM:Listener', {'status': 'fail', 'module': 'Modem', 'action': 'MODEM_CONNECTED', 'data':{'modem':result.data}})
+      }, 10000)
+
     }
   })
 
@@ -195,8 +153,3 @@ const getDefaultModemOptions = () => {
     }
 
 }
-
-
-// openInterval = setInterval(() => {
-//   console.log('openning port')
-// }, 10000)

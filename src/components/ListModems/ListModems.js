@@ -8,7 +8,7 @@ class ListModems extends Component{
 
   actionTemplate = (rowData, column) => {
     let color = null;
-    if(rowData.status === 'Online') {
+    if(rowData.status === 'Connected') {
       color ='ui-button-success'
     }else if (rowData.status === 'Offline') {
       color ='ui-button-danger'
@@ -22,7 +22,7 @@ class ListModems extends Component{
 
   statusColor(rowData, column) {
     let color = null;
-    if(rowData.status === 'Online') {
+    if(rowData.status === 'Connected') {
       color = 'green'
       return <span style={{color: color}}>{rowData['status']}</span>;
     } else if(rowData.status === 'Connecting..'){

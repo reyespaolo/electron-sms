@@ -56,8 +56,9 @@ const checkModem = (modemState, newModemsState) => {
 }
 
 const changeModemStatus = (modemState, modem, status) => {
+  console.log(modem)
   for (let key in modemState.modems) {
-    if (modemState.modems[key].comName === modem.comName) {
+    if ((modemState.modems[key].comName === (modem.comName||modem.modem.comName))) {
       modemState.modems[key].status = status
     }
   }
@@ -82,12 +83,12 @@ const reducer = (state = initialState, action) => {
       let newModemStatus = changeModemStatus(modemState, action.payload, 'Connecting..')
       return newModemStatus
     }
-    case actionTypes.INITIALIZING_MODEM: {
+    case actionTypes.CHANGE_MODEM_STATUS: {
       let modemState = {
         ...state,
         modems: [...state.modems]
       }
-      let newModemStatus = changeModemStatus(modemState, action.payload, 'Initializing..')
+      let newModemStatus = changeModemStatus(modemState, action.payload, action.status)
       return newModemStatus
     }
     default:
