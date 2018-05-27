@@ -5,7 +5,6 @@ const url = require('url')
 let contextMenu = Menu.buildFromTemplate( require('./contextMenu.js'))
 var modem = require('modem-commands').Modem()
 let openInterval = null;
-
 exports.win
 
 exports.createWindow = () => {
@@ -60,7 +59,6 @@ exports.createWindow = () => {
 
 const sendSMS = (payload) =>{
     modem.sendSMS(payload.contact, payload.message, function(response){
-      console.log('messgae status',response)
     })
 }
 
@@ -73,14 +71,11 @@ const initializeListeners = () => {
 
   ipcMain.on('MODEM:Actions', (err, payload) => {
     if(payload.status==='success'){
-
       switch(payload.action){
-
         case 'CONNECTING_MODEM': {
           onModemConnect(payload.data)
           break;
         }
-
         default:
           break;
       }
@@ -91,6 +86,7 @@ const initializeListeners = () => {
 
 
 const  initializeModem = () => {
+
   setInterval(() => {
     modem.listOpenPorts((err, result)=>{
       let mainContents = this.win.webContents;
@@ -100,7 +96,7 @@ const  initializeModem = () => {
 
 }
 
-const onModemConnect = (payload) => {
+const connectModem = (payload) => {
   let modemOptions = null;
   if(payload.modemoptions){
     modemOptions = paylaod.modemOptions
@@ -131,6 +127,21 @@ const onModemConnect = (payload) => {
 
     }
   })
+
+}
+
+const onModemConnect = (payload) => {
+
+  if(!modem.isOpened){
+    connectModem(payload)
+  }else{
+    if(modem.port.path===payload.comName){
+      let mainContents = this.win.webContents;
+      mainContents.send('MODEM:Listener', {'status': 'success', 'module': 'Modem', 'action': 'MODEM_CONNECTED', 'data':payload})
+    }
+
+
+  }
 
 
 

@@ -24,15 +24,17 @@ class Modem extends Component {
                 break;
               }
               case 'MODEM_CONNECTED': {
-                console.log('connected' , payload)
-                this.props.changeModemStatus({modem:{comName: payload.data.modem.modem}}, 'Connected');
+                if(payload.data.modem.modem){
+                  this.props.changeModemStatus({modem:{comName: payload.data.modem.modem}}, 'Connected');
+                }else if(payload.data.modem.comName){
+                  this.props.changeModemStatus({modem:{comName: payload.data.modem.comName}}, 'Connected');
+                }
                 break;
               }
               default:
                 break;
             }
           }else{
-            console.log(payload)
           }
         })
     }
