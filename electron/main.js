@@ -23,14 +23,6 @@ app.on('before-quit', (e) => {
   console.log('App about to Quit ')
 })
 
-// app.on('browser-window-blur', (e) => {
-//   console.log('Window out of Focus')
-// })
-//
-// app.on('browser-window-focus', (e) => {
-//   console.log('Window in')
-// })
-
 app.on('window-all-closed', (e) => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -50,62 +42,7 @@ function initializeGlobalShortcut(){
 }
 
 function initializeModem(){
-  // console.log(mainWindow.createWindow);
-  // setInterval(() => {
-  //   modem.listOpenPorts((err, result)=>{
-  //     mainContents.send('private', "TEST")
-  //   })
-  // }, 5000)
-
-
-  // let modemOptions = {
-  //   baudRate: 115200,
-  //   dataBits: 8,
-  //   parity: 'none',
-  //   stopBits: 1,
-  //   flowControl: false,
-  //   xon: false,
-  //   rtscts: false,
-  //   xoff: false,
-  //   xany: false,
-  //   buffersize: 0,
-  //   onNewMessage: true,
-  //   onNewMessageIndicator: true
-  // }
-  // var device = '/dev/tty.usbserial'
-  // setInterval(() => {
-  //   if (!modem.isOpened) {
-  //     modem.open(device,modemOptions, (err,result) => {
-  //       if(err){
-  //         console.log(err)
-  //       }else{
-  //         console.log(result)
-  //       }
-  //     })
-  //   } else {
-  //     console.log(`Serial port ${modem.port.path} is open`)
-  //   }
-  // }, 6000)
-  //
-  // modem.on('open', (data) => {
-  //   modem.initializeModem((response) => {
-  //     console.log('response',response)
-  //   })
-  //   modem.modemMode((response) => {
-  //     console.log(response)
-  //   }, "PDU")
-  // })
 }
 
 function initializeListeners(){
-    // ipcMain.on('SMSSending:SendSMS', (e,payload) => {
-    //   sendSMS(payload)
-    //
-    // })
 }
-
-// function sendSMS(payload){
-//     modem.sendSMS(payload.contact, payload.message, function(response){
-//       console.log('messgae status',response)
-//     })
-// }
